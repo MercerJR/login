@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!--<html lang="en">-->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>学生信息</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width">
+    <link rel="stylesheet" th:href="@{/webjars/mdui/dist/css/mdui.css}">
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/mdui/dist/js/mdui.js}"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+
+
+</head>
+
+<!--<body>-->
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
+
+<div class="mdui-container">
+    <div class="mdui-toolbar mdui-color-theme">
+        <a class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
+        <span class="mdui-typo-title">学生信息</span>
+        <h6 id="name"></h6>
+        <div class="mdui-toolbar-spacer"></div>
+        <a class="mdui-btn mdui-btn-icon" target="_blank"><i
+                class="mdui-icon material-icons">search</i></a>
+        <a class="mdui-btn mdui-btn-icon" th:href="@{/}"><i
+                class="mdui-icon material-icons">exit_to_app</i></a>
+        <a class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">more_vert</i></a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="container">
+        <form method="get">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+
+                    <th scope="col">性别</th>
+                    <th scope="col">学号</th>
+                    <th scope="col">专业</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr>
+
+                    <td>
+                        <div class="input-group">
+                            <input id="gender" type="text" class="form-control">
+                            <div class="input-group-append">
+
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <input id="stuNumber" type="text" class="form-control">
+                            <div class="input-group-append">
+
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <input id="major" type="text" class="form-control">
+                            <div class="input-group-append">
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <button type="submit" onclick="login()" class="btn btn-outline-primary">保存</button>
+
+        </form>
+    </div>
+
+
+    <div class="container">
+        <form method="get">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+
+                    <th scope="col">课程</th>
+                    <th scope="col">老师</th>
+                    <th scope="col">课程id</th>
+                    <th scope="col">人数</th>
+                </tr>
+                </thead>
+                <tbody id="teacherForm">
+
+                </tbody>
+            </table>
+
+        </form>
+        <form class="form-inline mb-2">
+            <div class="form-group">
+                <label for="staticEmail2" class="sr-only">Email</label>
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="选择课程">
+            </div>
+            <div class="input-group">
+                <input id="course" type="text" class="form-control">
+                <div class="input-group-append">
+
+                </div>
+            </div>
+            <button type="submit" onclick="choose()" class="btn btn-primary mb-2">提交</button>
+        </form>
+    </div>
+</div>
+</body>
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
+
+</html>
+<script>
+
+
+    function showCourse() {
+
+        var req = new XMLHttpRequest();
+        //设置请求方法 主机地址，是否异步
+        req.open("get", "/user/showCourse", true);
+        req.send();
+        //发送请求
+        //req.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+        //3.监听状态
+        req.onreadystatechange = function () {
+            //console.log(req.readyState + " " + req.status);
+            if (req.readyState == 4 && req.status == 200) {
+                //响应成功
+                //console.log(req.responseText); //服务器响应回来的string数据
+                //将接收json字符创转成Json对象(只能转数组[])
+                var str = "";
+                var content = JSON.parse(req.responseText);
+                for (var i = 0; i < 3; i++) {
+                    str += "<tr>";
+                    str += "<td>";
+                    str += content[i].course;
+                    str += "</td>";
+                    str += "<td>";
+                    str += content[i].teacher;
+                    str += "</td>";
+                    str += "<td>";
+                    str += content[i].courseId;
+                    str += "</td>";
+                    str += "<td>";
+                    str += content[i].number;
+                    str += "</td>";
+                    str += "</tr>"
+                }
+                document.getElementById("teacherForm").innerHTML = str;
+
+            }
+        }
+    }
+
+
+    function showChoose() {
+        var req = new XMLHttpRequest();
+        //设置请求方法 主机地址，是否异步
+        req.open("get", "/user/showChoose", true);
+        req.send();
+        //发送请求
+        //req.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+        //3.监听状态
+        req.onreadystatechange = function () {
+            //console.log(req.readyState + " " + req.status);
+            if (req.readyState == 4 && req.status == 200) {
+                //响应成功
+                //console.log(req.responseText); //服务器响应回来的string数据
+                //将接收json字符创转成Json对象(只能转数组[])
+                var str = "";
+                var content = JSON.parse(req.responseText);
+                for (var i = 0; i < 3; i++) {
+                    str += "<tr>";
+                    str += "<td>";
+                    str += content[i].course;
+                    str += "</td>";
+                    str += "<td>";
+                    str += content[i].teacher;
+                    str += "</td>";
+                    str += "<td>";
+                    str += content[i].courseId;
+                    str += "</td>";
+                    str += "<td>";
+                    str += content[i].number;
+                    str += "</td>";
+                    str += "</tr>"
+                }
+                document.getElementById("chooseForm").innerHTML = str;
+
+            }
+        }
+    }
+
+
+    function onLogin() {
+
+        var req = new XMLHttpRequest();
+        //设置请求方法 主机地址，是否异步
+        req.open("get", "/user/show", true);
+        req.send();
+        //发送请求
+        //req.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+        //3.监听状态
+        req.onreadystatechange = function () {
+            //console.log(req.readyState + " " + req.status);
+            if (req.readyState == 4 && req.status == 200) {
+                //响应成功
+                //console.log(req.responseText); //服务器响应回来的string数据
+                //将接收json字符创转成Json对象(只能转数组[])
+
+                var content = JSON.parse(req.responseText)
+
+                document.getElementById("name").innerHTML = content.name;
+                $('#gender').attr("value", content.gender);
+                //$('#stuNumber').attr("placeholder",content.stuNumber);
+                $('#stuNumber').attr("value", content.stuNumber);
+                // $('#major').attr("placeholder",content.major);
+                $('#major').attr("value", content.major);
+
+            }
+        }
+    }
+
+    onLogin();
+    showCourse();
+
+
+    function login() {
+        var params = {
+            "name": $("#name").val(),//取出文本中的值
+            "gender": $("#gender").val(),
+            "stuNumber": $("#stuNumber").val(),
+            "major": $("#major").val(),
+        }
+        $.ajax({
+            url: "/user/fill",
+            data: params,
+            type: "POST",
+            dataType: "json",//返回值类型 JSON
+            success: function (res) {  //请求成功的回调
+                if (res.result == "success") {
+                    // window.location.href = '/index?username='+$('#username').val(); //请求成功之后跳转的页面
+                    //getWebSocket( $("#username").val());
+                } else {
+                    alert(res.info)
+                }
+            },
+            error: function (res) { //请求失败的回调
+                alert(res.result)
+            },
+
+
+        })
+    }
+
+    function choose() {
+        var param = {
+            "course": $("#course").val(),//取出文本中的值
+        }
+        $.ajax({
+            url: "/user/choose",
+            data: param,
+            type: "POST",
+            dataType: "json",//返回值类型 JSON
+            success: function (res) {  //请求成功的回调
+                if (res.result == "选课成功") {
+                    // window.location.href = '/index?username='+$('#username').val(); //请求成功之后跳转的页面
+                    //getWebSocket( $("#username").val());
+                    alert(res.info)
+                } else {
+                    alert(res.info)
+                }
+            },
+            error: function (res) { //请求失败的回调
+                alert(res.result)
+            },
+
+
+        })
+    }
+</script>
+
