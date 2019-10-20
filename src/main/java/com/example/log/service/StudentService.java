@@ -4,6 +4,7 @@ import com.example.log.been.Choose;
 import com.example.log.been.Course;
 import com.example.log.been.Student;
 import com.example.log.dao.StudentDao;
+import com.train.mybatis.dao2.StudentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,13 @@ import java.util.List;
 public class StudentService {
     @Autowired
     private StudentDao studentDao;
+
+    @Autowired
+    private StudentMapper mapper;
+
+    public String S(String name){
+        return mapper.selectByName(name);
+    }
 
     public boolean register(Student student){
         String name = student.getName();

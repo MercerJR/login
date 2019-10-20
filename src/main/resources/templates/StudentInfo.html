@@ -30,7 +30,9 @@
     </div>
 </div>
 
+<p>
 <div class="container">
+    <p>
     <div class="container">
         <form method="get">
             <table class="table table-striped">
@@ -77,8 +79,31 @@
 
         </form>
     </div>
+    </p>
 
+    <p>
+    <div class="container">
+        <form method="get">
+            <table class="table table-striped">
+                <thead>
+                <tr>
 
+                    <th scope="col">已选课程</th>
+                    <th scope="col">老师</th>
+                    <th scope="col">课程id</th>
+
+                </tr>
+                </thead>
+                <tbody id="chooseForm">
+
+                </tbody>
+            </table>
+
+        </form>
+    </div>
+    </p>
+
+    <p>
     <div class="container">
         <form method="get">
             <table class="table table-striped">
@@ -111,7 +136,9 @@
             <button type="submit" onclick="choose()" class="btn btn-primary mb-2">提交</button>
         </form>
     </div>
+    </p>
 </div>
+</p>
 </body>
 
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
@@ -138,19 +165,19 @@
                 //将接收json字符创转成Json对象(只能转数组[])
                 var str = "";
                 var content = JSON.parse(req.responseText);
-                for (var i = 0; i < 3; i++) {
+                for (var i = 0; i < content.length; i++) {
                     str += "<tr>";
                     str += "<td>";
-                    str += content[i].course;
+                    str += content.course[i].course;
                     str += "</td>";
                     str += "<td>";
-                    str += content[i].teacher;
+                    str += content.course[i].teacher;
                     str += "</td>";
                     str += "<td>";
-                    str += content[i].courseId;
+                    str += content.course[i].courseId;
                     str += "</td>";
                     str += "<td>";
-                    str += content[i].number;
+                    str += content.course[i].number;
                     str += "</td>";
                     str += "</tr>"
                 }
@@ -177,21 +204,18 @@
                 //将接收json字符创转成Json对象(只能转数组[])
                 var str = "";
                 var content = JSON.parse(req.responseText);
-                for (var i = 0; i < 3; i++) {
+                for (var i = 0; i < content.length; i++) {
                     str += "<tr>";
                     str += "<td>";
-                    str += content[i].course;
+                    str += content.course[i].course;
                     str += "</td>";
                     str += "<td>";
-                    str += content[i].teacher;
+                    str += content.course[i].teacher;
                     str += "</td>";
                     str += "<td>";
-                    str += content[i].courseId;
+                    str += content.course[i].courseId;
                     str += "</td>";
                     str += "<td>";
-                    str += content[i].number;
-                    str += "</td>";
-                    str += "</tr>"
                 }
                 document.getElementById("chooseForm").innerHTML = str;
 
@@ -231,6 +255,7 @@
 
     onLogin();
     showCourse();
+    showChoose();
 
 
     function login() {
